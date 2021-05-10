@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:AppVerificare.ViewModels"
+             BackgroundColor="CornflowerBlue"
+             Title="Echipamente Bluebit"
+             x:Class="AppVerificare.Views.EchipamenteCafea"
+             x:DataType="viewmodels:EchipamenteCafeaViewModel">
+    
+    <ContentPage.BindingContext>
+        <viewmodels:EchipamenteCafeaViewModel/>
+    </ContentPage.BindingContext>
+    
+    
+    <Grid RowDefinitions="*,Auto, Auto, *">
+            <Label Text="{Binding CountDisplay}"
+                VerticalOptions="Center" 
+                   TextColor="Red"
+                   FontSize="Large"
+                HorizontalOptions="CenterAndExpand" 
+                   Grid.Row="0"/>
+            <Button Text="Apasa Aici"
+                    Grid.Row="1"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                    TextColor="Black"
+                    Command="{Binding IncreaseCount}">
+                
+            </Button>
+        </Grid>
+  
+</ContentPage>
