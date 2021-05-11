@@ -1,16 +1,103 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:AppVerificare.ViewModels"
-             BackgroundColor="CornflowerBlue"
-             Title="Echipamente Bluebit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:AppVerificare.ViewModels"
+             xmlns:models="clr-namespace:AppVerificare.Models"
+                     
              x:Class="AppVerificare.Views.EchipamenteCafea"
-             x:DataType="viewmodels:EchipamenteCafeaViewModel">
-    
+             x:DataType="viewmodels:EchipamenteCafeaViewModel"
+             >    
+      
     <ContentPage.BindingContext>
         <viewmodels:EchipamenteCafeaViewModel/>
     </ContentPage.BindingContext>
     
+    <ListView 
+              ItemSelected="ListView_ItemSelected"
+              ItemTapped="ListView_ItemTapped"
+              CachingStrategy="RecycleElement"
+              BackgroundColor="Transparent"
+              ItemsSource="{Binding GrupCafea}"
+              IsGroupingEnabled="True"
+              GroupDisplayBinding="{Binding Key}"
+              HasUnevenRows="True"
+              SeparatorColor="Black"
+              SeparatorVisibility="None"
+              IsPullToRefreshEnabled="True"
+              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+              RefreshCommand="{Binding RefreshCommand}">
+
+      
+
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="models:Cafea">
+                <ViewCell>
+                    <ViewCell.ContextActions>
+                        <MenuItem Text="Adauga la Favorite" Clicked="MenuItem_Clicked"/>
+                    </ViewCell.ContextActions>                 
+                    <Grid Padding="10">
+                        <Frame CornerRadius="10"
+                               HasShadow="True"
+                               BorderColor="Black">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="{Binding Imagine}"
+                                       WidthRequest="50">
+                                    
+                                </Image>
+                                <StackLayout VerticalOptions="Center">
+                                    <Label 
+                                        VerticalOptions="Center"
+                                        FontSize="Large"
+                                        Text="{Binding Nume}">
+                                </Label>
+                                <Label 
+                                    VerticalOptions="Center"
+                                    FontSize="Large"
+                                    Text="{Binding Producator}">
+                                </Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            
+        </ListView.ItemTemplate>
+        <ListView.Header>
+            <StackLayout Orientation="Vertical"
+                         VerticalOptions="Center">
+                <Label Text="Header"
+                       TextColor="Green"
+                       BackgroundColor="SandyBrown"/>
+
+            </StackLayout>
+        </ListView.Header>
+        <ListView.Footer>
+            <StackLayout Orientation="Vertical"
+                         VerticalOptions="Center">
+                <Label Text="Footer"
+                       TextColor="Green"
+                       BackgroundColor="SandyBrown"/>
+                <Button Text="Incarca mai multe produse"
+                        HorizontalOptions="Center"
+                        CornerRadius="15"
+                        
+                        />
+
+            </StackLayout>
+        </ListView.Footer>
+
+
+    </ListView>
+        
     
+    
+    
+    
+    
+    
+    
+    <!--  ce am aici este pt buton si incrementarea numararii
     <Grid RowDefinitions="*,Auto, Auto, *">
             <Label Text="{Binding CountDisplay}"
                 VerticalOptions="Center" 
@@ -27,5 +114,5 @@
                 
             </Button>
         </Grid>
-  
+   -->
 </ContentPage>

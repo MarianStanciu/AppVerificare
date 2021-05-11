@@ -11,6 +11,19 @@ namespace AppVerificare
             
         }
 
-       
+        private void ListView_ItemSelected(object sender, SelectedPositionChangedEventArgs e)
+        {
+
+        }
+
+        private void ListView_ItemTapped (object sender, ItemTappedEventArgs e)
+        {
+
+        }
+        private void Menu_ItemClicked( object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
