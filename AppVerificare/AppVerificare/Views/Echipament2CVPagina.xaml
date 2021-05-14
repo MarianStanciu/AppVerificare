@@ -13,8 +13,9 @@
     </ContentPage.BindingContext>
     <RefreshView
         Command="{Binding RefreshCommand}"
-        IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-       <CollectionView
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+         Style="{StaticResource BaseRefreshView}">
+        <CollectionView
            
             BackgroundColor="Transparent"
             IsGrouped="True"
@@ -23,8 +24,7 @@
             ItemsSource="{Binding GrupCafea}"
             RemainingItemsThreshold="1"
             RemainingItemsThresholdReachedCommand="{Binding DelayLoadMoreCommand}"
-           SelectedItem="{Binding SelectedCommand}"
-        
+            SelectedItem="{Binding SelectedCommand}"        
             SelectionMode="Single">
         <CollectionView.EmptyView>
             <StackLayout Padding="12">
@@ -51,7 +51,7 @@
                             <SwipeItem
                                     BackgroundColor="Red"
                                     IsDestructive="True"
-                                    Text="Delete" />
+                                    Text="Nu apasa" />
                         </SwipeItems>
                     </SwipeView.RightItems>
                     <Grid Padding="10">
