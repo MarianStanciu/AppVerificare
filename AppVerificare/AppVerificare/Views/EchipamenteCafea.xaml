@@ -89,30 +89,5 @@
 
 
     </ListView>
-        
-    
-    
-    
-    
-    
-    
-    
-    <!--  ce am aici este pt buton si incrementarea numararii
-    <Grid RowDefinitions="*,Auto, Auto, *">
-            <Label Text="{Binding CountDisplay}"
-                VerticalOptions="Center" 
-                   TextColor="Red"
-                   FontSize="Large"
-                HorizontalOptions="CenterAndExpand" 
-                   Grid.Row="0"/>
-            <Button Text="Apasa Aici"
-                    Grid.Row="1"
-                    VerticalOptions="CenterAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                    TextColor="Black"
-                    Command="{Binding IncreaseCount}">
-                
-            </Button>
-        </Grid>
-   -->
-</ContentPage>
+ 
+ </ContentPage>
