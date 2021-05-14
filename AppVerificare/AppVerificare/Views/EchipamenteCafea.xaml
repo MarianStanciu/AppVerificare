@@ -81,7 +81,7 @@
                 <Button Text="Incarca mai multe produse"
                         HorizontalOptions="Center"
                         CornerRadius="15"
-                        
+                        Command="{Binding LoadMoreCommand}"
                         />
 
             </StackLayout>

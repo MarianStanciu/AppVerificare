@@ -7,7 +7,11 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using Xamarin;
+using Xamarin.Forms;
+using System.Linq;
+using MvvmHelpers.Commands;
+using Command = MvvmHelpers.Commands.Command;
 
 
 namespace AppVerificare.ViewModels
@@ -17,29 +21,28 @@ namespace AppVerificare.ViewModels
         public ObservableRangeCollection <Cafea> Cafea { get; set; }
         public ObservableRangeCollection<Grouping<string,Cafea>> GrupCafea { get; }
         public AsyncCommand RefreshCommand { get; }
-       public  EchipamenteCafeaViewModel()
+        public AsyncCommand<object> SelectedCommand { get; }
+        public AsyncCommand<Cafea> FavoriteCommand { get; }
+        public Command ClearCommand { get; }
+        public Command DelayLoadMoreCommand { get; }
+        public Command LoadMoreCommand { get; }
+
+        public  EchipamenteCafeaViewModel()
         {
-            //IncreaseCount = new Command(OnIncrease);
-            //CallServerCommand = new AsyncCommand(CallServer);
-            //Cafea = new ObservableRangeCollection<Cafea>();
             Title = " Ecchipament Cafea";
 
             Cafea = new ObservableRangeCollection<Cafea>();
             GrupCafea = new ObservableRangeCollection<Grouping<string, Cafea>>();
 
-            var image = "https://www.yesplz.coffee/app/uploads/2020/11/emptybag-min.png";
-
-            Cafea.Add(new Cafea { Producator = "Jacobs", Nume = "Alintaroma", Imagine = image });
-            Cafea.Add(new Cafea { Producator = "Jacobs", Nume = "Alint", Imagine = image });
-            Cafea.Add(new Cafea { Producator = "Elita", Nume = "Neagra", Imagine = image });
-            Cafea.Add(new Cafea { Producator = "Elita", Nume = "Rosie", Imagine = image });
             
-
-            GrupCafea.Add(new Grouping<string, Cafea>("Jacobs", new[] { Cafea[1] } ));
-            GrupCafea.Add(new Grouping<string, Cafea>("Elita",new []  { Cafea [3]} ));
-
+            LoadMore();
 
             RefreshCommand = new AsyncCommand(Refresh);
+            SelectedCommand = new AsyncCommand<object>(Selected);
+            FavoriteCommand = new AsyncCommand<Cafea>(Favorite);
+            ClearCommand = new Command(Clear);
+            DelayLoadMoreCommand = new Command(DelayLoadMore);
+            LoadMoreCommand = new Command(LoadMore);
         }
         async Task Refresh()
         {
@@ -48,47 +51,62 @@ namespace AppVerificare.ViewModels
             IsBusy = false;
 
         }
-        // de ici in jos este codul de test pentru afisare buton si label cu numaratoare
-        //int count = 0;
-        //string countDisplay = "Eu numar clickurile";
+        async Task Favorite(Cafea cafea)
+        {
+            if (cafea == null)
+                return;
 
-        //public ICommand CallServerCommand { get; }
-        //async Task CallServer()
-        //{
-        //    var items = new List<string> { "Jacobs", "Lavazza", "Solubila" };
-        //    //Cafea.Add("Jacobs"); numai daca adaug un singur element, pentru mai multe folosesc range colecction
-        //    //Cafea.Add("Lavazza");
-        //    //Cafea.Add("Solubila");
-        //    Cafea.AddRange(items); // asa primesc 1 motificare pentru toata lista - se fol pt COLLECTIONVIEW, TABLEVIEWS, LISTVIEWS
-        //}
+            await Application.Current.MainPage.DisplayAlert("Favorite", cafea.Nume, "OK");
 
-        //public ICommand IncreaseCount { get; }
-        ////in loc de toata asta voi folosi Title
-        ////bool isBusy;
-        ////public bool IsBusy() 
-        ////{
-        ////    get => isBusy;
-        ////    set => SetProperty(ref isBusy, value);
-        ////}
+        }
+        Cafea previouslySelected;
+        Cafea cafeaSelectata;
+        public Cafea CafeaSelectata
+        {
+            get => cafeaSelectata;
+            set => SetProperty(ref cafeaSelectata, value);
+        }
+        async Task Selected(object args)
+        {
+            var cafea = args as Cafea;
+            if (cafea == null)
+                return;
 
+            CafeaSelectata = null;
 
+            await Application.Current.MainPage.DisplayAlert("Selected", cafea.Nume, "OK");
 
-        //public string CountDisplay
-        //{
-        //    get => countDisplay;
-        //    set => SetProperty(ref countDisplay, value);
-        //    //{                                         // aici in loc sa scriu validarea - fol mvvmhelpers care o are implementata
-        //    //    if (value == countDisplay)
-        //    //        return;
-        //    //    countDisplay = value;
-        //    //    OnPropertyChanged();
-        //    //}
-        //}
+        }
+        void LoadMore()
+        {
+            if (Cafea.Count >= 20)
+                return;
 
-        //void OnIncrease()
-        //{
-        //    count++;
-        //    CountDisplay = $"Ai dat clic pe buton de {count}  ori ";
-        //}
+          
+            var image = "https://www.yesplz.coffee/app/uploads/2020/11/emptybag-min.png";
+
+            Cafea.Add(new Cafea { Producator = "Jacobs", Nume = "Alintaroma", Imagine = image });
+            Cafea.Add(new Cafea { Producator = "Jacobs", Nume = "Alint", Imagine = image });
+            Cafea.Add(new Cafea { Producator = "Elita", Nume = "Neagra", Imagine = image });
+            Cafea.Add(new Cafea { Producator = "Elita", Nume = "Rosie", Imagine = image });
+            GrupCafea.Clear();
+
+            GrupCafea.Add(new Grouping<string, Cafea>("Jacobs", Cafea.Where(c => c.Producator == "Jacobs")));
+            GrupCafea.Add(new Grouping<string, Cafea>("Elita", Cafea.Where(c => c.Producator == "Elita")));
+        }
+        void DelayLoadMore()
+        {
+            if (Cafea.Count <= 10)
+                return;
+
+            LoadMore();
+        }
+
+        void Clear()
+        {
+            Cafea.Clear();
+            GrupCafea.Clear();
+        }
+
     }
 }

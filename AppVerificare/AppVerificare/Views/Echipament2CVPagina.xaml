@@ -15,6 +15,7 @@
         Command="{Binding RefreshCommand}"
         IsRefreshing="{Binding IsBusy, Mode=OneWay}">
        <CollectionView
+           
             BackgroundColor="Transparent"
             IsGrouped="True"
             ItemSizingStrategy="MeasureAllItems"
@@ -22,7 +23,8 @@
             ItemsSource="{Binding GrupCafea}"
             RemainingItemsThreshold="1"
             RemainingItemsThresholdReachedCommand="{Binding DelayLoadMoreCommand}"
-            SelectedItem="{Binding SelectedCoffee, Mode=TwoWay}"
+           SelectedItem="{Binding SelectedCommand}"
+        
             SelectionMode="Single">
         <CollectionView.EmptyView>
             <StackLayout Padding="12">
